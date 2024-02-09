@@ -88,7 +88,7 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@app/modules(|/.*)$": "<rootDir>/libs/modules/src/$1"
+      "^@app/database(|/.*)$": "<rootDir>/libs/database/src/$1"
     }
   }
 }
