@@ -3,14 +3,20 @@ import { ApolloGatewayDriver, ApolloGatewayDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { authContext } from './auth.context';
+import { AuthModule } from '../auth/auth.module';
+import { UsersModule } from 'apps/users/src/users.module';
+import { AuthService } from '../auth/auth.service';
+import { AuthResolver } from '../auth/auth.resolver';
+import { JwtService } from '@nestjs/jwt';
+import { UsersService } from 'apps/users/src/users.service';
 
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloGatewayDriverConfig>({
       driver: ApolloGatewayDriver,
-      server: {
-        context: authContext,
-      },
+      // server: {
+      //   context: authContext,
+      // },
       gateway: {
         supergraphSdl: new IntrospectAndCompose({
           subgraphs: [
@@ -20,21 +26,21 @@ import { authContext } from './auth.context';
             },
           ],
         }),
-        buildService({ url }) {
-          return new RemoteGraphQLDataSource({
-            url,
-            willSendRequest({ request, context }) {
-              request.http.headers.set(
-                'user',
-                context.user ? JSON.stringify(context.user) : null,
-              );
-            },
-          });
-        },
+        // buildService({ url }) {
+        //   return new RemoteGraphQLDataSource({
+        //     url,
+        //     willSendRequest({ request, context }) {
+        //       request.http.headers.set(
+        //         'user',
+        //         context.user ? JSON.stringify(context.user) : null,
+        //       );
+        //     },
+        //   });
+        // },
       },
     }),
   ],
-  controllers: [],
   providers: [],
+  exports: [],
 })
 export class GatewayModule {}
