@@ -12,6 +12,10 @@ export class UserResponse {
   _id: string;
 
   @Field((type) => String)
+  @Prop({ type: String, default: null })
+  stripe_id: string;
+
+  @Field((type) => String)
   @Prop({ type: String, required: true, unique: true })
   email: string;
 

@@ -40,7 +40,8 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "stripe": "^14.16.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
@@ -83,7 +84,11 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "roots": [
-      "<rootDir>/apps/"
-    ]
+      "<rootDir>/apps/",
+      "<rootDir>/libs/"
+    ],
+    "moduleNameMapper": {
+      "^@app/modules(|/.*)$": "<rootDir>/libs/modules/src/$1"
+    }
   }
 }

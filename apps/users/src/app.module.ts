@@ -5,11 +5,9 @@ import {
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
 
-import { UsersResolver } from './users.resolver';
-import { UsersService } from './users.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UserResponse, UserSchema } from './entities/user.entity';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -29,10 +27,9 @@ import { UserResponse, UserSchema } from './entities/user.entity';
         uri: configService.get('MONGO_URI'),
       }),
     }),
-    MongooseModule.forFeature([
-      { schema: UserSchema, name: UserResponse.name },
-    ]),
+    UsersModule,
   ],
-  providers: [UsersResolver, UsersService],
+  providers: [],
+  exports: [],
 })
-export class UsersModule {}
+export class UsersAppModule {}

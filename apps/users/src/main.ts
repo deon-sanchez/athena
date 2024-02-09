@@ -1,13 +1,15 @@
 import { NestFactory } from '@nestjs/core';
-import { UsersModule } from './users.module';
+import { UsersAppModule } from './app.module';
 
-const PORT = process.env.PORT || 3001;
+const USERS_PORT = process.env.USERS_PORT || 3001;
 
 async function bootstrap() {
-  const app = await NestFactory.create(UsersModule);
+  const app = await NestFactory.create(UsersAppModule);
   app.enableCors();
-  await app.listen(PORT);
+  await app.listen(USERS_PORT);
 
-  console.log(`Application is running on: http://localhost:${PORT}/graphql`);
+  console.log(
+    `Application is running on: http://localhost:${USERS_PORT}/graphql`,
+  );
 }
 bootstrap();

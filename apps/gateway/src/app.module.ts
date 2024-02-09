@@ -2,13 +2,13 @@ import { IntrospectAndCompose, RemoteGraphQLDataSource } from '@apollo/gateway';
 import { ApolloGatewayDriver, ApolloGatewayDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { authContext } from './auth.context';
-import { AuthModule } from '../auth/auth.module';
-import { UsersModule } from 'apps/users/src/users.module';
-import { AuthService } from '../auth/auth.service';
-import { AuthResolver } from '../auth/auth.resolver';
+import { authContext } from './context/auth.context';
+import { AuthModule } from '../../users/src/modules/auth/auth.module';
+import { UsersModule } from 'apps/users/src/modules/users/users.module';
+import { AuthService } from '../../users/src/modules/auth/auth.service';
+import { AuthResolver } from '../../users/src/modules/auth/auth.resolver';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from 'apps/users/src/users.service';
+import { UsersService } from 'apps/users/src/modules/users/users.service';
 
 @Module({
   imports: [
@@ -43,4 +43,4 @@ import { UsersService } from 'apps/users/src/users.service';
   providers: [],
   exports: [],
 })
-export class GatewayModule {}
+export class GatewayAppModule {}

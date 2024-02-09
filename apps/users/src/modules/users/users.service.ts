@@ -6,8 +6,8 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { UserDocument, UserResponse } from './entities/user.entity';
-import { UserInput } from './dto/create-user.input';
+import { UserDocument, UserResponse } from '../../entities/user.entity';
+import { UserInput } from '../../dto/create-user.input';
 
 const SALT_ROUNDS = 10;
 
@@ -77,6 +77,24 @@ export class UsersService {
       return user;
     } catch (error) {
       throw new InternalServerErrorException('User deletion failed');
+    }
+  }
+
+  /**
+   * Updates a user with the specified email.
+   * @param email - The email of the user to update.
+   * @param json - The updated user data.
+   * @returns A promise that resolves to the updated user.
+   * @throws InternalServerErrorException if the user update fails.
+   */
+  async updateUser(email: string, json: any): Promise<UserResponse> {
+    try {
+      const user = await this.userModel
+        .findOneAndUpdate({ email }, json, { new: true })
+        .exec();
+      return user;
+    } catch (error) {
+      throw new InternalServerErrorException('User update failed');
     }
   }
 }
