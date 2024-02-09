@@ -1,7 +1,23 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { Field, HideField, ObjectType } from '@nestjs/graphql';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { Document } from 'mongoose';
 
-@ObjectType()
-export class User {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+export type UserDocument = UserResponse & Document;
+
+@ObjectType({ description: 'User Response' })
+@Schema()
+export class UserResponse {
+  @Field((type) => String)
+  @Prop({ type: mongoose.Schema.Types.ObjectId, auto: true })
+  _id: string;
+
+  @Field((type) => String)
+  @Prop({ type: String, required: true, unique: true })
+  email: string;
+
+  @HideField()
+  @Prop({ type: String, required: true })
+  password: string;
 }
+
+export const UserSchema = SchemaFactory.createForClass(UserResponse);

@@ -1,47 +1,29 @@
-import {
-  Resolver,
-  Query,
-  Mutation,
-  Args,
-  Int,
-  ResolveReference,
-} from '@nestjs/graphql';
+import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 import { UsersService } from './users.service';
-import { User } from './entities/user.entity';
-import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
+import { UserResponse } from './entities/user.entity';
+import { UserInput } from './dto/create-user.input';
 
-@Resolver(() => User)
+@Resolver((of) => UserResponse)
 export class UsersResolver {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly userService: UsersService) {}
 
-  @Mutation(() => User)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.usersService.create(createUserInput);
+  @Query((returns) => [UserResponse])
+  getUsers(): Promise<UserResponse[]> {
+    return this.userService.getAllUsers();
   }
 
-  @Query(() => [User], { name: 'users' })
-  findAll() {
-    return this.usersService.findAll();
+  @Query((returns) => UserResponse)
+  async getUser(@Args('email') email: string): Promise<UserResponse> {
+    return this.userService.getUserByEmail(email);
   }
 
-  @Query(() => User, { name: 'user' })
-  findOne(@Args('email', { type: () => String }) email: string) {
-    return this.usersService.findOne(email);
+  @Mutation((returns) => UserResponse)
+  async createUser(@Args('input') input: UserInput): Promise<UserResponse> {
+    return this.userService.createUser(input);
   }
 
-  @Mutation(() => User)
-  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.usersService.update(updateUserInput.id, updateUserInput);
-  }
-
-  @Mutation(() => User)
-  removeUser(@Args('id', { type: () => Int }) id: number) {
-    return this.usersService.remove(id);
-  }
-
-  @ResolveReference()
-  resolveReference(reference: { __typename: string; email: string }) {
-    return this.usersService.findOne(reference.email);
+  @Mutation((returns) => UserResponse)
+  async deleteUser(@Args('email') email: string): Promise<UserResponse> {
+    return this.userService.deleteUserByEmail(email);
   }
 }
